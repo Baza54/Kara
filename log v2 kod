@@ -1,0 +1,53 @@
+using System;
+using System.Linq;
+using System.Windows;
+
+namespace YourCompanyName_OrderFormApp
+{
+    public partial class LoginWindow : Window
+    {
+        private OrderDbContext dbContext = new OrderDbContext();
+
+        public LoginWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            string enteredEmail = EmailTextBox.Text;
+            string enteredPassword = PasswordBox.Password;
+
+            // Проверка логина и пароля
+            Employee authenticatedEmployee = AuthenticateEmployee(enteredEmail, enteredPassword);
+
+            if (authenticatedEmployee != null)
+            {
+                // Открываем окно для добавления нового клиента
+                AddCustomerWindow addCustomerWindow = new AddCustomerWindow(authenticatedEmployee);
+                addCustomerWindow.Show();
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Invalid email or password. Please try again.");
+            }
+        }
+
+        private Employee AuthenticateEmployee(string email, string password)
+        {
+            try
+            {
+                // Проверка логина и пароля в базе данных
+                return dbContext.Employees.SingleOrDefault(
+                    employee => employee.Email == email && employee.Password == password
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+    }
+}
