@@ -1,0 +1,72 @@
+-- Create table "OTK Services"
+CREATE TABLE OTK_Services (
+    ID INT PRIMARY KEY,
+    Service_Name NVARCHAR(255),
+    Cost DECIMAL(10, 2),
+    Service_Code NVARCHAR(50),
+    Execution_Period INT,
+    Average_Deviation DECIMAL(5, 2),
+    Archive BIT DEFAULT 0
+);
+
+-- Create table "Customer Data"
+CREATE TABLE Customer_Data (
+    ID INT PRIMARY KEY,
+    Customer_Type NVARCHAR(2), -- "LL" or "IP" (Legal Entity or Individual Person)
+    Company_Name NVARCHAR(255),
+    Address NVARCHAR(255),
+    INN NVARCHAR(20),
+    Account NVARCHAR(20),
+    BIK NVARCHAR(20),
+    CEO_Name NVARCHAR(255),
+    Contact_Person_Name NVARCHAR(255),
+    Contact_Person_Phone NVARCHAR(20),
+    E_mail NVARCHAR(255),
+    Password NVARCHAR(255),
+    Date_of_Birth DATE,
+    Passport_Serial_Number NVARCHAR(20),
+    Archive BIT DEFAULT 0
+);
+
+-- Create table "Order"
+CREATE TABLE Order (
+    ID INT PRIMARY KEY,
+    Creation_Date DATETIME,
+    Order_Status NVARCHAR(50),
+    Execution_Time INT,
+    Order_Cost DECIMAL(10, 2),
+    Customer_ID INT FOREIGN KEY REFERENCES Customer_Data(ID),
+    Archive BIT DEFAULT 0
+);
+
+-- Create table "Provided Service"
+CREATE TABLE Provided_Service (
+    ID INT PRIMARY KEY,
+    Execution_Date DATETIME,
+    Performer_ID INT FOREIGN KEY REFERENCES OTK_Staff(ID),
+    Order_ID INT FOREIGN KEY REFERENCES Order(ID),
+    Service_ID INT FOREIGN KEY REFERENCES OTK_Services(ID),
+    Archive BIT DEFAULT 0
+);
+
+-- Create table "OTK Staff Data"
+CREATE TABLE OTK_Staff_Data (
+    ID INT PRIMARY KEY,
+    Login NVARCHAR(50),
+    Password NVARCHAR(255),
+    Full_Name NVARCHAR(255),
+    Last_Login_Date DATETIME,
+    Service_Set NVARCHAR(MAX), -- Possibly an array or list of services
+    Conducted_Researches NVARCHAR(MAX), -- Possibly an array or list of conducted services
+    Archive BIT DEFAULT 0
+);
+
+-- Create table "Other OTK Staff Data"
+CREATE TABLE Other_OTK_Staff_Data (
+    ID INT PRIMARY KEY,
+    Login NVARCHAR(50),
+    Password NVARCHAR(255),
+    Full_Name NVARCHAR(255),
+    Last_Login_Date DATETIME,
+    Archive BIT DEFAULT 0
+);
