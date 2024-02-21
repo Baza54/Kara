@@ -1,0 +1,70 @@
+using System;
+using System.Linq;
+using System.Windows;
+
+namespace YourCompanyName_OrderFormApp
+{
+    public partial class AddCustomerWindow : Window
+    {
+        private OrderDbContext dbContext = new OrderDbContext();
+
+        public AddCustomerWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string customerType = CustomerTypeComboBox.Text;
+                string companyName = CompanyNameTextBox.Text;
+                string address = AddressTextBox.Text;
+                string inn = INNTextBox.Text;
+                string contactPerson = ContactPersonTextBox.Text;
+                string contactPhone = ContactPhoneTextBox.Text;
+                string email = EmailTextBox.Text;
+                string password = PasswordBox.Password;
+
+                // Проверка наличия клиента в базе данных по email или ИНН
+                if (dbContext.Customers.Any(c => c.Email == email || c.INN == inn))
+                {
+                    MessageBox.Show("Customer with the same Email or INN already exists.");
+                    return;
+                }
+
+                // Создание нового объекта клиента
+                Customer newCustomer = new Customer
+                {
+                    CustomerType = customerType,
+                    CompanyName = companyName,
+                    Address = address,
+                    INN = inn,
+                    ContactPerson = contactPerson,
+                    ContactPhone = contactPhone,
+                    Email = email,
+                    Password = password
+                    // Другие поля клиента...
+                };
+
+                // Добавление клиента в базу данных
+                dbContext.Customers.Add(newCustomer);
+
+                // Сохранение изменений
+                dbContext.SaveChanges();
+
+                MessageBox.Show("Customer saved successfully!");
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+    }
+}
