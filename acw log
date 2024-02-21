@@ -1,0 +1,21 @@
+// Ваш код для открытия окна в LoginButton_Click в LoginWindow
+private void LoginButton_Click(object sender, RoutedEventArgs e)
+{
+    string enteredEmail = EmailTextBox.Text;
+    string enteredPassword = PasswordBox.Password;
+
+    // Проверка логина и пароля
+    Employee authenticatedEmployee = AuthenticateEmployee(enteredEmail, enteredPassword);
+
+    if (authenticatedEmployee != null)
+    {
+        // Открываем окно для добавления нового клиента, передавая информацию о сотруднике
+        AddCustomerWindow addCustomerWindow = new AddCustomerWindow(authenticatedEmployee);
+        addCustomerWindow.Show();
+        this.Close();
+    }
+    else
+    {
+        MessageBox.Show("Invalid email or password. Please try again.");
+    }
+}
