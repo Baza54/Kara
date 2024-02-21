@@ -1,0 +1,38 @@
+using System;
+using System.Windows;
+
+namespace YourCompanyName_OrderFormApp
+{
+    public partial class AddCustomerWindow : Window
+    {
+        public AddCustomerWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Добавление кода для сохранения данных о клиенте в базе данных
+            // Пример:
+            string customerType = CustomerTypeComboBox.Text;
+            string companyName = CompanyNameTextBox.Text;
+            string address = AddressTextBox.Text;
+            string inn = INNTextBox.Text;
+            string contactPerson = ContactPersonTextBox.Text;
+            string contactPhone = ContactPhoneTextBox.Text;
+            string email = EmailTextBox.Text;
+            string password = PasswordBox.Password;
+
+            // Добавьте логику сохранения данных в базу данных
+            // ...
+
+            MessageBox.Show("Customer saved successfully!");
+            this.Close();
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+    }
+}
