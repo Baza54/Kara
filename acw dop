@@ -1,0 +1,20 @@
+using System.Windows;
+
+namespace YourCompanyName_OrderFormApp
+{
+    public partial class AddCustomerWindow : Window
+    {
+        private Employee loggedInEmployee;
+
+        public AddCustomerWindow(Employee employee)
+        {
+            InitializeComponent();
+            loggedInEmployee = employee;
+
+            // Здесь вы можете использовать информацию о вошедшем сотруднике, например, отобразить его ФИО или должность в интерфейсе.
+            // employee.FullName, employee.Position и т.д.
+        }
+
+        // Ваш код для AddCustomerWindow...
+    }
+}
