@@ -1,0 +1,72 @@
+-- Создание таблицы "Услуги ОТК"
+CREATE TABLE Услуги_ОТК (
+    ID INT PRIMARY KEY,
+    Наименование NVARCHAR(255),
+    Стоимость DECIMAL(10, 2),
+    Код_услуги NVARCHAR(50),
+    Срок_выполнения INT,
+    Среднее_отклонение DECIMAL(5, 2),
+    Архив BIT DEFAULT 0
+);
+
+-- Создание таблицы "Данные клиентов"
+CREATE TABLE Данные_клиентов (
+    ID INT PRIMARY KEY,
+    Тип_клиента NVARCHAR(2), -- "ЮЛ" или "ФЛ"
+    Название_компании NVARCHAR(255),
+    Адрес NVARCHAR(255),
+    ИНН NVARCHAR(20),
+    Р_счет NVARCHAR(20),
+    БИК NVARCHAR(20),
+    ФИО_руководителя NVARCHAR(255),
+    ФИО_контактного_лица NVARCHAR(255),
+    Телефон_контактного_лица NVARCHAR(20),
+    E_mail NVARCHAR(255),
+    Пароль NVARCHAR(255),
+    Дата_рождения DATE,
+    Серия_номер_паспорта NVARCHAR(20),
+    Архив BIT DEFAULT 0
+);
+
+-- Создание таблицы "Заказ"
+CREATE TABLE Заказ (
+    ID INT PRIMARY KEY,
+    Дата_создания DATETIME,
+    Статус_заказа NVARCHAR(50),
+    Время_выполнения INT,
+    Стоимость_заказа DECIMAL(10, 2),
+    Клиент_ID INT FOREIGN KEY REFERENCES Данные_клиентов(ID),
+    Архив BIT DEFAULT 0
+);
+
+-- Создание таблицы "Оказанная услуга"
+CREATE TABLE Оказанная_услуга (
+    ID INT PRIMARY KEY,
+    Дата_выполнения DATETIME,
+    Исполнитель_ID INT FOREIGN KEY REFERENCES Данные_лаборантов_и_контролеров_ОТК(ID),
+    Заказ_ID INT FOREIGN KEY REFERENCES Заказ(ID),
+    Услуга_ID INT FOREIGN KEY REFERENCES Услуги_ОТК(ID),
+    Архив BIT DEFAULT 0
+);
+
+-- Создание таблицы "Данные лаборантов и контролеров ОТК"
+CREATE TABLE Данные_лаборантов_и_контролеров_ОТК (
+    ID INT PRIMARY KEY,
+    Логин NVARCHAR(50),
+    Пароль NVARCHAR(255),
+    ФИО NVARCHAR(255),
+    Последняя_дата_входа DATETIME,
+    Набор_услуг NVARCHAR(MAX), -- Возможно, здесь будет массив или список услуг
+    Проведенные_исследования NVARCHAR(MAX), -- Возможно, здесь будет массив или список оказанных услуг
+    Архив BIT DEFAULT 0
+);
+
+-- Создание таблицы "Данные других сотрудников ОТК"
+CREATE TABLE Данные_других_сотрудников_ОТК (
+    ID INT PRIMARY KEY,
+    Логин NVARCHAR(50),
+    Пароль NVARCHAR(255),
+    ФИО NVARCHAR(255),
+    Последняя_дата_входа DATETIME,
+    Архив BIT DEFAULT 0
+);
